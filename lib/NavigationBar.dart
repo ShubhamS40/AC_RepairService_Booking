@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:khatushyam/screen//home.dart';
+import 'package:khatushyam/screen/bookingDetail.dart';
+import 'package:khatushyam/screen/contactPage.dart';
+import 'package:khatushyam/screen/profilePage.dart';
 
 class NavigationPage extends StatefulWidget {
   const NavigationPage({super.key});
@@ -11,6 +14,9 @@ class NavigationPage extends StatefulWidget {
 class _NavigationPageState extends State<NavigationPage> {
   final List<Widget> _pages = [
     HomePage(),
+    BookingDetailPage(),
+    ContactPage(),
+    UserProfilePage()
   ];
   int _selectedIndex = 0; // Track the selected tab index
 
@@ -33,12 +39,12 @@ class _NavigationPageState extends State<NavigationPage> {
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Search',
+            icon: Icon(Icons.calendar_month),
+            label: 'Booking Detail',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.notifications),
-            label: 'Notifications',
+            icon: Icon(Icons.support_agent),
+            label: 'Customer Support',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.account_circle),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:input_quantity/input_quantity.dart';
 import 'package:khatushyam/constant/textTheme.dart';
+import 'package:khatushyam/screen/paymentOption.dart';
 
 class BookingScreen extends StatefulWidget {
   const BookingScreen({required this.serviceCharges, required this.categoryName, Key? key}) : super(key: key);
@@ -50,192 +51,258 @@ class _BookingScreenState extends State<BookingScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          title: Text(
-            "Select Booking Date",
-            style: Theme.of(context).textTheme.headlineLarge,
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(60.0),
+          child: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Colors.blue[900]!, Colors.blue[400]!],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+            ),
+            child: AppBar(
+              title: Text(
+                "Select Booking Date",
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.white),
+              ),
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+            ),
           ),
         ),
-        body: SingleChildScrollView( // Wrap the content in a SingleChildScrollView
+        body: SingleChildScrollView(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("${widget.categoryName}", style: TextStyle(fontSize: 24, fontWeight: FontWeight.w400)),
-
-              SizedBox(
-                height: 70,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text("Add Ac Unit", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                    SizedBox(
-                      width: 150,
-                      child: InputQty(
-                        maxVal: 10.0,
-                        initVal: 0.0,
-                        minVal: 0.0,
-                        steps: 1,
-                        onQtyChanged: (val) {
-                          setState(() {
-                            _quantity = val;
-                          });
-                        },
-                      ),
-                    ),
-                  ],
-                ),
+              Text(
+                widget.categoryName,
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.w400),
               ),
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Per Unit",
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        "Service Charge",
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: Colors.grey),
-                      ),
-                    ],
-                  ),
-                  Text(
-                    "${widget.serviceCharges}", // Show service charges as formatted text
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                  ),
-                ],
-              ),
-
-              Container(
-                height: 1,
-                color: Colors.grey,
-              ),
-              SizedBox(height: 10),
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Subtotal",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400, color: Colors.black45),
-                  ),
-                  Text(
-                    "${_subtotal.toStringAsFixed(2)}", // Show subtotal as formatted text
-                    style: TextStyle(fontSize: 18),
-                  ),
-                ],
-              ),
-
-              SizedBox(height: 10),
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Total",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400, color: Colors.black45),
-                  ),
-                  Text(
-                    "${_total.toStringAsFixed(2)}", // Show total as formatted text
-                    style: TextStyle(fontSize: 18),
-                  ),
-                ],
-              ),
-
               SizedBox(height: 20),
+              _buildQuantitySelector(),
+              SizedBox(height: 20),
+              _buildPriceDetails(),
+              SizedBox(height: 20),
+              _buildImage(),
+              SizedBox(height: 20),
+              _buildDateSelector(),
+              SizedBox(height: 20),
+              _buildTimeSelector(),
+              SizedBox(height: 20),
+              _buildBookButton(context),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 
-              Container(
-                height: 150,
-                width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                  color: Colors.pink,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10), // Match the container's border radius
-                  child: Image.asset(
-                    "assets/acgascharge.jpg",
-                    fit: BoxFit.cover, // Use BoxFit.cover for better aspect ratio handling
+  Widget _buildQuantitySelector() {
+    return Container(
+      padding: const EdgeInsets.all(12.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12.0),
+        gradient: LinearGradient(
+          colors: [Colors.blue[900]!, Colors.blue[400]!],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text("Add Ac Unit", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)),
+          SizedBox(
+            width: 150,
+            child: InputQty(
+              maxVal: 10.0,
+              initVal: 0.0,
+              minVal: 0.0,
+              steps: 1,
+              onQtyChanged: (val) {
+                setState(() {
+                  _quantity = val;
+                });
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPriceDetails() {
+    return Container(
+      padding: const EdgeInsets.all(12.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12.0),
+        gradient: LinearGradient(
+          colors: [Colors.blue[900]!, Colors.blue[400]!],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+      ),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Per Unit",
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
                   ),
-                ),
+                  Text(
+                    "Service Charge",
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: Colors.white70),
+                  ),
+                ],
               ),
-
-
-              Container(
-                margin: EdgeInsets.symmetric(vertical: 20),
-                decoration: BoxDecoration(
-                  color: Colors.black54,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text("Set a Date", style: TextStyle(color: Colors.white, fontSize: 26, fontWeight: FontWeight.w800)),
-                    SizedBox(height: 8.0),
-                    GestureDetector(
-                      onTap: _selectDate,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.calendar_today, color: Colors.white),
-                          SizedBox(width: 8.0),
-                          Text(
-                            "${_selectedDate.day}-${_selectedDate.month}-${_selectedDate.year}",
-                            style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.w400),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.black54,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text("Set a Time", style: TextStyle(color: Colors.white, fontSize: 26, fontWeight: FontWeight.w800)),
-                    SizedBox(height: 8.0),
-                    GestureDetector(
-                      onTap: _selectTime,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.access_time, color: Colors.white),
-                          SizedBox(width: 8.0),
-                          Text(
-                            "${_selectedTime.format(context)}",
-                            style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.w400),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-              SizedBox(height: 10),
-
-              Center(
-                child: CustomButton(
-                  name: "Book Now",
-                  onPressed: () {
-                    // Add booking logic here
-                    print("Booking Confirmed");
-                  },
-                ),
+              Text(
+                widget.serviceCharges,
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Colors.white),
               ),
             ],
+          ),
+          Divider(color: Colors.white70),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Subtotal",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400, color: Colors.white70),
+              ),
+              Text(
+                _subtotal.toStringAsFixed(2),
+                style: TextStyle(fontSize: 18, color: Colors.white),
+              ),
+            ],
+          ),
+          SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Total",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400, color: Colors.white70),
+              ),
+              Text(
+                _total.toStringAsFixed(2),
+                style: TextStyle(fontSize: 18, color: Colors.white),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildImage() {
+    return Container(
+      height: 150,
+      width: MediaQuery.of(context).size.width,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12.0),
+        gradient: LinearGradient(
+          colors: [Colors.blue[900]!, Colors.blue[400]!],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(12.0),
+        child: Image.asset(
+          "assets/acgascharge.jpg",
+          fit: BoxFit.cover,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDateSelector() {
+    return Container(
+      padding: const EdgeInsets.all(12.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12.0),
+        gradient: LinearGradient(
+          colors: [Colors.blue[900]!, Colors.blue[400]!],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+      ),
+      child: GestureDetector(
+        onTap: _selectDate,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.calendar_today, color: Colors.white),
+            SizedBox(width: 8.0),
+            Text(
+              "${_selectedDate.day}-${_selectedDate.month}-${_selectedDate.year}",
+              style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.w400),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTimeSelector() {
+    return Container(
+      padding: const EdgeInsets.all(12.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12.0),
+        gradient: LinearGradient(
+          colors: [Colors.blue[900]!, Colors.blue[400]!],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+      ),
+      child: GestureDetector(
+        onTap: _selectTime,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.access_time, color: Colors.white),
+            SizedBox(width: 8.0),
+            Text(
+              _selectedTime.format(context),
+              style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.w400),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBookButton(BuildContext context) {
+    return Center(
+      child: Container(
+        width: double.infinity,
+        height: 50,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12.0),
+          gradient: LinearGradient(
+            colors: [Colors.blue[900]!, Colors.blue[400]!],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
+        child: GestureDetector(
+          onTap: (){
+            Navigator.push(context, MaterialPageRoute(builder: (context) => PaymentMethodPage()));
+            print("Booking Confirmed");
+          },
+          child: Container(
+            alignment: Alignment.center,
+            child: Text(
+              "Book Now",
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+            ),
           ),
         ),
       ),
