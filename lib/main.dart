@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:khatushyam/NavigationBar.dart';
-import 'package:khatushyam/pages/home.dart';
-import 'package:khatushyam/utlities/textTheme.dart';
+import 'package:khatushyam/screen//home.dart';
+import 'package:khatushyam/constant//textTheme.dart';
 
 
 

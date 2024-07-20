@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:khatushyam/pages/home.dart';
+import 'package:khatushyam/screen//home.dart';
 
 class NavigationPage extends StatefulWidget {
   const NavigationPage({super.key});

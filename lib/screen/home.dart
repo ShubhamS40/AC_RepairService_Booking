@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:khatushyam/screen/booking.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -11,34 +12,32 @@ class _HomePageState extends State<HomePage> {
   List<Map<String, String>> categoryItem = [
     {
       "categoryName": "AC Service",
-      "categoryImage": "assets/download.jpeg",
+      "serviceCharge":"400",
+      "categoryImage": "assets/acservice.jpg",
       "CategoryDescription": "Book a repair"
     },
     {
-      "categoryName": "Plumbing",
-      "categoryImage": "assets/download.jpeg",
+      "categoryName": "AC Installation",
+      "serviceCharge":"1500",
+      "categoryImage": "assets/acinstallation.jpg",
       "CategoryDescription": "Fix your pipes"
     },
     {
-      "categoryName": "Plumbing",
-      "categoryImage": "assets/download.jpeg",
+      "categoryName": "AC Pour   Gas",
+      "serviceCharge":"2200",
+      "categoryImage": "assets/acgascharge.jpg",
       "CategoryDescription": "Fix your pipes"
     },
     {
-      "categoryName": "Plumbing",
-      "categoryImage": "assets/download.jpeg",
+      "categoryName": "AC Checking",
+      "serviceCharge":"200",
+      "categoryImage": "assets/acchecking.jpg",
       "CategoryDescription": "Fix your pipes"
     },
-    {
-      "categoryName": "Electrical",
-      "categoryImage": "assets/download.jpeg",
-      "CategoryDescription": "Get electrical help"
-    },
-    {
-      "categoryName": "Cleaning",
-      "categoryImage": "assets/download.jpeg",
-      "CategoryDescription": "House cleaning services"
-    }
+
+
+
+
   ];
 
   @override
@@ -87,6 +86,7 @@ class _HomePageState extends State<HomePage> {
           // Wrapping GridView in Expanded to fill remaining space
           Expanded(
             child: Container(
+
               padding: const EdgeInsets.all(20),
               child: GridView.builder(
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -99,34 +99,40 @@ class _HomePageState extends State<HomePage> {
                   final item = categoryItem[index];
                   return Material(
                     elevation: 10,
-                    child: Container(
+                      child: GestureDetector(
+                        onTap: (){
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=>BookingScreen(categoryName: item["categoryName"]!,serviceCharges: item["serviceCharge"]!)));
+                        },
+                        child: Container(
 
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // Image that takes full width and maintains aspect ratio
-                          SizedBox(
-                            width: double.infinity,
-                            height: 160, // Fixed height for images to prevent overflow
-                            child: Image.asset(
-                              item["categoryImage"]!,
-                              fit: BoxFit.cover,
-                            ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // Image that takes full width and maintains aspect ratio
+                              SizedBox(
+                                width: double.infinity,
+                                height: 120, // Fixed height for images to prevent overflow
+                                child: Image.asset(
+                                  item["categoryImage"]!,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: Text(
+                                  item["categoryName"]!,
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                                child: Text(item["CategoryDescription"]!),
+                              ),
+                            ],
                           ),
-                          Padding(
-                            padding: const EdgeInsets.all(4.0),
-                            child: Text(
-                              item["categoryName"]!,
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                            child: Text(item["CategoryDescription"]!),
-                          ),
-                        ],
+                        ),
                       ),
-                    ),
+
                   );
                 },
               ),
